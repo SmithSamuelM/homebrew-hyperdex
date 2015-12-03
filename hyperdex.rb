@@ -24,6 +24,7 @@ class Hyperdex < Formula
   option 'with-python-bindings', "Builds and installs Python client bindings"
   option 'with-java-bindings', "Builds and installs Java client bindings"
   option 'with-ruby-bindings', "Builds and installs Ruby client bindings"
+  option 'with-python3', "Python client bindings use /usr/local/bin/python3"
 
   def patches
     DATA
@@ -35,7 +36,8 @@ class Hyperdex < Formula
     args << "--enable-java-bindings" if build.with? "java-bindings"
     args << "--enable-python-bindings" if build.with? "python-bindings"
     args << "--enable-ruby-bindings" if build.with? "ruby-bindings"
-    
+    args << "PYTHON=/usr/local/bin/python3" if build.with? "python3"
+
     system "./configure", "--prefix=#{prefix}", *args
     system "make"
     system "make install"
@@ -49,7 +51,7 @@ index 49f299b..e09b659 100644
 @@ -499,7 +499,7 @@ uint128 CityHash128(const char *s, size_t len) {
        CityHash128WithSeed(s, len, uint128(k0, k1));
  }
- 
+
 -#ifdef __SSE4_2__
 +#if 0
  #include <citycrc.h>
